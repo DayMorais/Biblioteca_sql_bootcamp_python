@@ -46,6 +46,3 @@ pytest tests/ -vv --cov=src
 
 ## [Pre-requisitos](https://github.com/AleDevir/Bootcamp-Back-End-Python-Exercicio-POO/blob/desafio_poo_Squad_Grace_Hopper/pre-requisitos.md)
 
-## ${\color {#a65a0a} Ciclo  \ de \ Desenvolvimento:}$  
-
-![ciclo de desenvolvimento](https://github.com/user-attachments/assets/840e089a-e081-4594-babe-1027670ccd87)
