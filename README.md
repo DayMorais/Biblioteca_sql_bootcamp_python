@@ -38,6 +38,3 @@ pylint <nome_do_arquivo.py>
 
 ## [Pre-requisitos](https://github.com/AleDevir/Bootcamp-Back-End-Python-Exercicio-POO/blob/desafio_poo_Squad_Grace_Hopper/pre-requisitos.md)
 
-## ${\color {#a65a0a} Cronograma \ de \ Desenvolvimento:}$  
-
-![cronograma de desenvolvimento]()
