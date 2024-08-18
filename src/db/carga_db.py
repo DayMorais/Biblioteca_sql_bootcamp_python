@@ -31,6 +31,11 @@ from src.db.autor_livro_db import(
     insert_autores_livros,
     drop_table_autores_livros
 )
+from src.db.genero_livro_db import(
+    criar_tabela_generos_livros,
+    insert_generos_livros,
+    drop_table_generos_livros
+)
 from src.db.exemplar_db import(
     criar_tabela_exemplares,
     insert_exemplar,
@@ -54,6 +59,7 @@ def carregar_banco_de_dados(db_conection: Connection) -> None:
     '''
     drop_table_emprestimos(db_conection)
     drop_table_autores_livros(db_conection)
+    drop_table_generos_livros(db_conection)
     drop_table_autores(db_conection)
     drop_table_generos(db_conection)
     drop_table_exemplares(db_conection)
@@ -67,6 +73,7 @@ def carregar_banco_de_dados(db_conection: Connection) -> None:
     criar_tabela_editoras(db_conection)
     criar_tabela_livros(db_conection)
     criar_tabela_autores_livros(db_conection)
+    criar_tabela_generos_livros(db_conection)
     criar_tabela_exemplares(db_conection)
     criar_tabela_emprestimos(db_conection)
 
@@ -128,6 +135,22 @@ def carregar_banco_de_dados(db_conection: Connection) -> None:
     insert_autores_livros(db_conection, 1, 4)
     insert_autores_livros(db_conection, 2, 4)
     insert_autores_livros(db_conection, 3, 4)
+
+
+    # Generos_Livros
+    # Livro 1
+    insert_generos_livros(db_conection, 1, 1)
+    # Livro 2
+    insert_generos_livros(db_conection, 1, 2)
+    insert_generos_livros(db_conection, 2, 2)
+    # Livro 3
+    insert_generos_livros(db_conection, 1, 3)
+    insert_generos_livros(db_conection, 2, 3)
+    insert_generos_livros(db_conection, 3, 3)
+    # Livro 4
+    insert_generos_livros(db_conection, 1, 4)
+    insert_generos_livros(db_conection, 2, 4)
+    insert_generos_livros(db_conection, 3, 4)
 
     # Emprestimos
     hoje = get_now()

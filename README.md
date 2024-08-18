@@ -34,14 +34,6 @@ pylint *
 #Para testar cada arquivo:
 pylint <nome_do_arquivo.py> 
 
-#Para testar um ou mais arquivos
-mypy --show-error-codes --check-untyped-defs <nome_do_arquivo.py>  <nome_da_pasta>
-
-# Testes com relatório de cobertura para o sonar (coverage.xml).
-pytest tests/ -vv --cov=src --cov-report=xml
-
-# Testes com relatório de cobertura exibido no console.
-pytest tests/ -vv --cov=src
 ```
 
 ## [Pre-requisitos](https://github.com/AleDevir/Bootcamp-Back-End-Python-Exercicio-POO/blob/desafio_poo_Squad_Grace_Hopper/pre-requisitos.md)
