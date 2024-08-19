@@ -165,7 +165,7 @@ def carregar_db(conexao: Connection) -> None:
 
 
 ###########################################################
-                  # GERENCIAMENTO #
+                  # Biblioteca - DB #
 ###########################################################
 def biblioteca_db() -> None:
     '''
@@ -180,21 +180,21 @@ def biblioteca_db() -> None:
             if opcao == 'C':
                 carregar_db(conexao)
             if opcao == '1':
-                print('\n\tDesenvolver: Listar todos os livros disponíveis')
+                print('\n\tDesenvolver ou inserir a funcionalidade: Listar todos os livros disponíveis')
             if opcao == '2':
-                print('\n\tDesenvolver: Encontrar todos os livros emprestados no momento')
+                print('\n\tDesenvolver ou inserir a funcionalidade: Encontrar todos os livros emprestados no momento')
             if opcao == '3':
-                print('\n\tDesenvolver: Localizar os livros escritos por um autor específico')
+                print('\n\tDesenvolver ou inserir a funcionalidade: Localizar os livros escritos por um autor específico')
             if opcao == '4':
-                print('\n\tDesenvolver: Verificar o número de cópias disponíveis de um determinado livro')
+                print('\n\tDesenvolver ou inserir a funcionalidade: Verificar o número de cópias disponíveis de um determinado livro')
             if opcao == '5':
-                print('\n\tDesenvolver: Mostrar os empréstimos em atraso')
+                print('\n\tDesenvolver ou inserir a funcionalidade: Mostrar os empréstimos em atraso')
             if opcao == '6':
-                print('\n\tDesenvolver: Marcar um livro como devolvido')
+                print('\n\tDesenvolver ou inserir a funcionalidade: Marcar um livro como devolvido')
             if opcao == '7':
-                print('\n\tDesenvolver: Remover um autor')
+                print('\n\tDesenvolver ou inserir a funcionalidade: Remover um autor')
             if opcao == "S":
-                print(bright_amarelo('\n\tVolte sempre!'))
+                print(bright_amarelo('\n\tVocê saiu do sistema!'))
                 break
     except Exception as erro:
         print('ERRO!!!')
