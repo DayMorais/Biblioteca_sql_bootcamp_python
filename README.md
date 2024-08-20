@@ -40,4 +40,4 @@ pylint <nome_do_arquivo.py>
 ![Cronograma](https://github.com/AleDevir/Biblioteca_sql_bootcamp_python/blob/Desafio_SQL_Squad_Grace_Hopper/docs/img/Cronograma-Premissas.png)
 
 ## Diagrama ER:
-![ER](https://github.com/AleDevir/Biblioteca_sql_bootcamp_python/blob/Desafio_SQL_Squad_Grace_Hopper/docs/img/Diaframa%20ER.png)
+![ER](https://github.com/AleDevir/Biblioteca_sql_bootcamp_python/blob/Desafio_SQL_Squad_Grace_Hopper/docs/img/Diagrama%20ER.png)
