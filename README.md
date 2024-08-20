@@ -36,6 +36,8 @@ pylint <nome_do_arquivo.py>
 ## [Documentação](https://github.com/AleDevir/Biblioteca_sql_bootcamp_python/blob/Desafio_SQL_Squad_Grace_Hopper/docs/documentacao.md)
 ## [Pre-requisitos](https://github.com/AleDevir/Bootcamp-Back-End-Python-Exercicio-POO/blob/desafio_poo_Squad_Grace_Hopper/pre-requisitos.md)
 
+## Distribuição das Atividade
+![Atividades](https://github.com/AleDevir/Biblioteca_sql_bootcamp_python/blob/Desafio_SQL_Squad_Grace_Hopper/docs/img/Distribui%C3%A7%C3%A3o%20das%20atividades.png)
 ## Cronogrma e Premissas das Atividades
 ![Cronograma](https://github.com/AleDevir/Biblioteca_sql_bootcamp_python/blob/Desafio_SQL_Squad_Grace_Hopper/docs/img/Cronograma-Premissas.png)
 
