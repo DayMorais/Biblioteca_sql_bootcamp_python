@@ -86,6 +86,10 @@ def carregar_banco_de_dados(db_conection: Connection) -> None:
     insert_autor(db_conection, 'autor1')
     insert_autor(db_conection, 'autor2')
     insert_autor(db_conection, 'autor3')
+    # Autores que podem para excluidos, pois não possuem associação com livros.
+    insert_autor(db_conection, 'autor4')
+    insert_autor(db_conection, 'autor5')
+    insert_autor(db_conection, 'autor6')
 
     # Genero
     insert_genero(db_conection, 'genero1')
