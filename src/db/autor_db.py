@@ -30,3 +30,11 @@ def insert_autor(db_conection: Connection, nome: str) -> None:
     '''
     db_conection.cursor().execute("INSERT INTO autores(nome) VALUES(?)", (nome,))
     db_conection.commit()
+
+
+def consultar_por_autor(db_conection: Connection, nome_autor: str) -> list:
+    '''
+    Consulta livros de um autor específico.
+    '''
+    cursor = db_conection.cursor()
+    cursor.execute('SELECT id FROM autores WHERE nome = ?', (nome_autor,))
