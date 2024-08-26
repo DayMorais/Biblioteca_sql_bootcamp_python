@@ -42,7 +42,7 @@ def remover_autor(db_conection: Connection, nome_autor: str) -> None:
     Remove um autor específico e suas referências.
     '''
     cursor = db_conection.cursor()
-    cursor.execute('DELETE FROM autores_livros WHERE id_autor = (SELECT id FROM autores WHERE nome = ?)', (nome_autor,))
+    cursor.execute('DELETE FROM autores_livros WHERE autor_id = (SELECT id FROM autores WHERE nome = ?)', (nome_autor,))
     cursor.execute('DELETE FROM autores WHERE nome = ?', (nome_autor,))
     
     db_conection.commit()
