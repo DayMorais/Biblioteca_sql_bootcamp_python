@@ -1,9 +1,8 @@
 from sqlite3 import Connection
-from src.db.conexao_db import get_conexao_db
 
-def listar_livros (conexao: Connection, nome_tabela: str):
+def listar_livros (conexao: Connection):
     cursor = conexao.cursor()
-    lista = cursor.execute(f'SELECT * FROM {nome_tabela}')
+    lista = cursor.execute(f'SELECT titulo FROM livros INNER JOIN exemplares ON livros.id = exemplares.livro_id WHERE disponivel IS 1')
     
     for livro in lista:
         print (livro)
