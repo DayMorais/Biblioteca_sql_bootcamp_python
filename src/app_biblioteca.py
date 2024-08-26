@@ -181,8 +181,8 @@ def biblioteca_db() -> None:
             if opcao == 'C':
                 carregar_db(conexao)
             if opcao == '1':
-                print('\n\tListando todos os livros disponíveis...')
-                listar_livros(conexao, 'livros')
+                print('\n\tListando todos os exemplares disponíveis...')
+                listar_livros(conexao)
             if opcao == '2':
                 print('\n\tDesenvolver ou inserir a funcionalidade: Encontrar todos os livros emprestados no momento')
             if opcao == '3':
