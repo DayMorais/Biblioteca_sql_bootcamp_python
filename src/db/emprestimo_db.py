@@ -109,7 +109,7 @@ def tuple_to_dict(data: tuple) -> dict[str, Any]:
     }
 
 
-def get_emprestimos_atrasados(db_conection: Connection, ) -> list[dict[str, int]]:
+def get_emprestimos_atrasados(db_conection: Connection, ) -> list[dict[str, Any]]:
     '''
     Obter todos os emprestimos em atraso
     '''
@@ -127,7 +127,7 @@ def get_emprestimos_atrasados(db_conection: Connection, ) -> list[dict[str, int]
 
 
     emprestimos_db = cursor.fetchall()
-    result: list[dict[str, int]] = []
+    result: list[dict[str, Any]] = []
     for data in emprestimos_db:
         emprestimo = tuple_to_dict(data)
         result.append(emprestimo)

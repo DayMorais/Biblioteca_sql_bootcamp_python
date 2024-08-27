@@ -112,7 +112,7 @@ def input_int(msg: str) -> int:
         except ValueError:
             print(bright_vermelho('\n\tApenas números inteiros são aceitos. Por favor, tente novamente.\n')) # pylint: disable=line-too-long
 
-def input_opcoes(msg: str, opcoes: dict[str]) -> str:
+def input_opcoes(msg: str, opcoes: dict[str, str]) -> str:
     '''
     Obtem a opção válida.
     Retorna a opção.
@@ -143,7 +143,7 @@ def escolher_uma_opcao_do_menu_entrada(opcoes_menu_dict: dict[str, str]) -> str:
     Retorna uma das opções do menu.
     '''
     exibir_menu(opcoes_menu_dict)
-    siglas: list[str] = list(opcoes_menu_dict)
+    siglas: dict[str, str] = opcoes_menu_dict
     escolher_opcao = input_opcoes('\n\tEntre com a opção desejada: ', siglas).upper() # pylint: disable=line-too-long
     while escolher_opcao not in siglas:
         escolher_opcao = input_opcoes(
@@ -197,7 +197,7 @@ def exibir_livro_escrito_por_autor( autor: str, livros: list[dict[str, str]]) ->
         titulo = livro['titulo']
         print(bright_amarelo(f"\n\tLivro de título '{titulo}'"))
 
-def exibir_emprestimos_em_atraso(emprestimos: list[dict[str, str]]) -> None:
+def exibir_emprestimos_em_atraso(emprestimos: list[dict[str, Any]]) -> None:
     '''
     Exibe o resultado número de exemplares de um determinado livro.
     '''
@@ -227,7 +227,7 @@ def exibir_emprestimos_em_atraso(emprestimos: list[dict[str, str]]) -> None:
 ######################################################
              # FUNCIONALIDADES DA APLICAÇÃO #
 ######################################################
-def encontar_todos_livros_emprestados(conexao: Connection) -> list[dict[str, str]]:
+def encontar_todos_livros_emprestados(conexao: Connection) -> None:
     '''
     Obtem todos os livros emprestados no momento.
     '''
@@ -246,7 +246,7 @@ def encontar_todos_livros_emprestados(conexao: Connection) -> list[dict[str, str
         else:
             print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplar emprestado.")) # pylint: disable=line-too-long
 
-def localizar_livros_do_autor(conexao: Connection) -> list[dict[str, str]]:
+def localizar_livros_do_autor(conexao: Connection) -> None:
     '''
     Localizar os livros escritos por um autor específico
     '''
@@ -259,7 +259,7 @@ def localizar_livros_do_autor(conexao: Connection) -> list[dict[str, str]]:
 
 def verificar_numero_de_exemplares_disponiveis_do_livro(
     conexao: Connection
-) -> list[dict[str, str]]:
+) -> None:
     '''
     Verifica o número de cópias disponíveis de um determinado livro
     '''
@@ -268,13 +268,13 @@ def verificar_numero_de_exemplares_disponiveis_do_livro(
     if not livro:
         print(bright_vermelho(f'\n\t {titulo} não encontrado na base de dados.'))
     else:
-        quantidade = verificar_copias_disponiveis(conexao, livro['id'])
+        quantidade = verificar_copias_disponiveis(conexao, int(livro['id']))
         if quantidade > 1:
             print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplares disponíveis")) # pylint: disable=line-too-long
         else:
             print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplar disponível")) # pylint: disable=line-too-long
 
-def mostrar_emprestimos_em_atraso(conexao: Connection)  -> list[dict[str, str]]:
+def mostrar_emprestimos_em_atraso(conexao: Connection)  -> None:
     '''
     Mostra os empréstimos em atraso
     '''
@@ -304,7 +304,7 @@ def devolver(conexao: Connection, identificacao_emprestimo: int) -> dict[str, An
     )
     return get_emprestimo_by_id(conexao, identificacao_emprestimo)
 
-def devolver_livro(conexao: Connection) -> dict[str, Any]:
+def devolver_livro(conexao: Connection) -> None:
     '''
     Marca um livro como devolvido
     '''
@@ -315,7 +315,7 @@ def devolver_livro(conexao: Connection) -> dict[str, Any]:
     except ValueError as erro:
         print(bright_vermelho(str(erro)))
 
-def deletar_um_autor(conexao: Connection) -> dict[str, Any]:
+def deletar_um_autor(conexao: Connection) -> None:
     '''
     Remover um autor
     '''

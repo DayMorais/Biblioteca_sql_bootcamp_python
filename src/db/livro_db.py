@@ -75,7 +75,10 @@ def get_livro_by_id(db_conection: Connection, livro_id: int) -> dict[str, str]:
     livro_db = cursor.fetchone()
     return tuple_to_dict(livro_db)
 
-def get_livros_by_autor_nome(db_conection: Connection, autor_nome: str) -> list[dict[str, str]]:
+def get_livros_by_autor_nome(
+    db_conection: Connection,
+    autor_nome: str
+) -> list[dict[str, Any]]:
     '''
     Obter todos os livros de um determinado autor
     '''
@@ -87,7 +90,7 @@ def get_livros_by_autor_nome(db_conection: Connection, autor_nome: str) -> list[
                         WHERE a.nome = '{autor_nome}' """)
 
     autores_db = cursor.fetchall()
-    result: list[dict[str, int]] = []
+    result: list[dict[str, Any]] = []
     for data in autores_db:
         autor = tuple_to_dict(data)
         result.append(autor)
