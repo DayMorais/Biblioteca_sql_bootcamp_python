@@ -35,5 +35,5 @@ def insert_usuario(
     Inseri usuario na tabela.
     '''
     dados = (nome, telefone, nacionalidade)
-    db_conection.cursor().execute("INSERT INTO usuarios(nome, telefone, nacionalidade) VALUES(?, ?, ?)", dados)
+    db_conection.cursor().execute("INSERT INTO usuarios(nome, telefone, nacionalidade) VALUES(?, ?, ?)", dados) # pylint: disable=line-too-long
     db_conection.commit()

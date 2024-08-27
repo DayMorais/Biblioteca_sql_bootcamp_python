@@ -3,6 +3,7 @@ DB autor
 Documentação de apoio: https://www.sqlitetutorial.net/
 '''
 
+from typing import Any
 from sqlite3 import Connection
 
 
@@ -32,20 +33,42 @@ def insert_autor(db_conection: Connection, nome: str) -> None:
     db_conection.commit()
 
 
-def consultar_por_autor(db_conection: Connection, nome_autor: str) -> list:
+def tuple_to_dict(data: tuple) -> dict[str, Any]:
     '''
-    Consulta livros de um autor específico.
+    Transforma um elemento (tuple) do banco de dados em uma estrutura de dicionário.
+    Retorna o dicionário com dados.
+    '''
+    if not data:
+        return {}
+    identificacao, nome =  data
+    return {
+        'id': identificacao,
+        'nome': nome,
+    }
+
+
+def get_autor_by_id(db_conection: Connection, autor_id: int) -> dict[str, Any]:
+    '''
+    Obter um autor pelo id.
     '''
     cursor = db_conection.cursor()
-    cursor.execute('SELECT id FROM autores WHERE nome = ?', (nome_autor,))
-    autor_id = cursor.fetchone()
-    
-    if(autor_id):
-        autor_id = autor_id[0]:
-        cursor.execute('SELECT titulo FROM livros WHERE autor_id = ?', (autor_id,))
-        autor_id = cursor.fetchall()
-        return [livro[0] for livro in livros]
-    else:
-        return[]
+    cursor.execute(f"SELECT id, nome FROM autores WHERE id = {autor_id} ")
+    data = cursor.fetchone()
+    return tuple_to_dict(data)
 
 
+def get_autor_by_nome(db_conection: Connection, autor_nome: str) -> dict[str, Any]:
+    '''
+    Obter um Autor pelo nome.
+    '''
+    cursor = db_conection.cursor()
+    cursor.execute(f"SELECT id, nome FROM autores WHERE nome = '{autor_nome}' ")
+    data = cursor.fetchone()
+    return tuple_to_dict(data)
+
+def delete_autor(db_conection: Connection, identificacao: int):
+    '''
+    Deleta um autor de id informado.
+    '''
+    db_conection.cursor().execute("DELETE FROM autores WHERE id= ?", (str(identificacao)))
+    db_conection.commit()
