@@ -27,11 +27,13 @@ Para testar todos:
 
 ```
 # Para testar todos:
-pylint *
+pylint src
 
-#Para testar cada arquivo:
+# Para testar cada arquivo:
 pylint <nome_do_arquivo.py> 
 
+# Para testar um ou mais arquivos com mypy
+mypy --show-error-codes --check-untyped-defs src
 ```
 ## [Documentação](https://github.com/AleDevir/Biblioteca_sql_bootcamp_python/blob/Desafio_SQL_Squad_Grace_Hopper/docs/documentacao.md)
 ## [Pre-requisitos](https://github.com/AleDevir/Bootcamp-Back-End-Python-Exercicio-POO/blob/desafio_poo_Squad_Grace_Hopper/pre-requisitos.md)
