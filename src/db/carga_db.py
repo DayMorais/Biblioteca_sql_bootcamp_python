@@ -162,6 +162,7 @@ def carregar_banco_de_dados(db_conection: Connection) -> None:
     dois_dias_atras =  hoje + timedelta(days=-2) # Anteontem
     tres_dias_atras =  hoje + timedelta(days=-3) # 3 dias atrás
     quatro_dias_atras =  hoje + timedelta(days=-4) # 4 dias atrás
+    cinco_dias_atras =  hoje + timedelta(days=-5) # 5 dias atrás
 
     amanha = hoje + timedelta(days=1) # amanhã
     depois_de_amanha = hoje + timedelta(days=2) # depois de amanhã
@@ -179,3 +180,4 @@ def carregar_banco_de_dados(db_conection: Connection) -> None:
 
     # Atrasado
     insert_emprestimo(db_conection, 1, 3, 1, 'EMPRESTADO', quatro_dias_atras, ontem, None, 0)
+    insert_emprestimo(db_conection, 2, 4, 2, 'EMPRESTADO', cinco_dias_atras, dois_dias_atras, None, 0)

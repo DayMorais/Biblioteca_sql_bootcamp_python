@@ -18,7 +18,7 @@ from src.db.livro_db import(
     get_livros_by_autor_nome,
     get_livro_by_titulo,
 )
-
+from src.db.emprestimo_db import get_emprestimos_atrasados
 from src.db.exemplar_db import verificar_copias_disponiveis
 
 
@@ -209,6 +209,33 @@ def exibir_livro_escrito_por_autor( autor: str, livros: list[dict[str, str]]) ->
         titulo = livro['titulo']
         print(bright_amarelo(f"\n\tLivro de título '{titulo}'"))
 
+def exibir_emprestimos_em_atraso(emprestimos: list[dict[str, str]]) -> None:
+    '''
+    Exibe o resultado número de exemplares de um determinado livro.
+    '''
+    print(bright_amarelo('\n\tEmpréstimos em atraso:'))
+    print(bright_amarelo("\n\t.................................................."))
+    for emprestimo in emprestimos:
+        identificado_emprestimo = emprestimo['id']
+        usuario_nome = emprestimo['usuario_nome']
+        titulo = emprestimo['livro_titulo']
+        editora = emprestimo['editora_nome']
+        identificado_exemplar = emprestimo['exemplar_id']
+        data_emprestimo = emprestimo['data_emprestimo']
+        data_para_devolucao = emprestimo['data_para_devolucao']
+        data_devolucao = emprestimo['data_devolucao']
+
+        print(bright_amarelo(f"\n\tEmpréstimo de identificação: |{identificado_emprestimo}|"))
+        print(bright_amarelo(f"\n\tUsuário: {usuario_nome}"))
+        print(bright_amarelo(f"\n\tTitulo: {titulo}"))
+        print(bright_amarelo(f"\n\tEditora: {editora}"))
+        print(bright_amarelo(f"\n\tData do empréstimo: {data_emprestimo}"))
+        print(bright_amarelo(f"\n\tData para devolução: {data_para_devolucao}"))
+        print(bright_amarelo(f"\n\tData de devolução: {data_devolucao if data_devolucao else '-'}"))
+        print(bright_amarelo(f"\n\tExemplar de identificado: |{identificado_exemplar}|"))
+        print(bright_amarelo("\n\t.................................................."))
+
+
 ######################################################
              # FUNCIONALIDADES DA APLICAÇÃO #
 ######################################################
@@ -246,6 +273,13 @@ def verificar_numero_de_exemplares_disponiveis_do_livro(
             print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplares disponíveis"))
         else:
             print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplar disponível"))
+
+def mostrar_emprestimos_em_atraso(conexao: Connection)  -> list[dict[str, str]]:
+    '''
+    Mostra os empréstimos em atraso
+    '''
+    emprestimo = get_emprestimos_atrasados(conexao)
+    exibir_emprestimos_em_atraso(emprestimo)
 
 ###########################################################
                   # CARREGAR BANCO DE DAODS #
@@ -293,7 +327,7 @@ def biblioteca_db() -> None:
             if opcao == '4':
                 verificar_numero_de_exemplares_disponiveis_do_livro(conexao)
             if opcao == '5':
-                print('\n\tDesenvolver ou inserir a funcionalidade: Mostrar os empréstimos em atraso')
+                mostrar_emprestimos_em_atraso(conexao)
             if opcao == '6':
                 print('\n\tDesenvolver ou inserir a funcionalidade: Marcar um livro como devolvido')
             if opcao == '7':
