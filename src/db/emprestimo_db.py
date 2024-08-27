@@ -62,27 +62,15 @@ def insert_emprestimo(
     db_conection.cursor().execute('INSERT INTO emprestimos(usuario_id, livro_id, exemplar_id, numero_de_renovacoes, estado, data_emprestimo, data_para_devolucao, data_devolucao) VALUES(?, ?, ?, ?, ?, ?, ?, ?)', dados) # pylint: disable=line-too-long
     db_conection.commit()
 
-#Encontrar todos os livros emprestados no momento.
-
-#import sqlite3
-
-#conexão com o banco de dados
 from sqlite3 import Connection
-from src.db.conexao_db import get_conexao_db
 
-# Função para encontrar todos os livros emprestados
 def encontrar_livros_emprestados (conexao: Connection):
     cursor = conexao.cursor()
-    
-# Executando o comando SQL para encontrar livros emprestados   
-    cursor.execute("SELECT * FROM emprestimos WHERE estado = emprestado")
+    cursor.execute("SELECT titulo FROM livros RIGHT JOIN emprestimos ON livros.id = emprestimos.livro_id WHERE emprestimos.estado = 'EMPRESTADO'")
 
-# Verificando se existem livros emprestados e imprimindo os resultados
-    if livros_emprestados:
+ if livros_emprestados:
         for livro in livros_emprestados:
-            print("O livro está emprestado")
+            print(f"O livro {livro} está emprestado")
     else:
         print("Não há livros emprestados no momento.")
     
-    
-conexao.close()
