@@ -63,7 +63,6 @@ def insert_emprestimo(
     db_conection.commit()
 
 from sqlite3 import Connection
-from src.db.conexao_db import get_conexao_db
 
 def encontrar_livros_emprestados (conexao: Connection):
     cursor = conexao.cursor()
