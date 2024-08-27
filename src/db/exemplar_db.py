@@ -4,7 +4,7 @@ Documentação de apoio: https://www.sqlitetutorial.net/
 '''
 
 from sqlite3 import Connection
-from conexao_db import get_conexao_db
+
 
 
 def drop_table_exemplares(db_conection: Connection) -> None:
@@ -58,14 +58,3 @@ def verificar_copias_disponiveis(
         'SELECT COUNT(*) FROM exemplares WHERE livro_id = ? AND disponivel = 1', (livro_id,))
     resultado = cursor.fetchone()
     return resultado[0] if resultado else 0
-
-
-# Criando a tabela exemplares
-criar_tabela_exemplares(db_connection)
-
-# Inserindo um exemplar de exemplo
-insert_exemplar(db_connection, livro_id=1, disponivel=1)
-
-# Verificando o número de cópias disponíveis do livro com ID 1
-numero_copias = verificar_copias_disponiveis(db_connection, livro_id=1)
-print(f'Número de cópias disponíveis: {numero_copias}')

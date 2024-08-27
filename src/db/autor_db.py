@@ -41,7 +41,7 @@ def consultar_por_autor(db_conection: Connection, nome_autor: str) -> list:
     autor_id = cursor.fetchone()
     
     if(autor_id):
-        autor_id = autor_id[0]:
+        autor_id = autor_id[0]
         cursor.execute('SELECT titulo FROM livros WHERE autor_id = ?', (autor_id,))
         autor_id = cursor.fetchall()
         return [livro[0] for livro in livros]
