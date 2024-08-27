@@ -110,19 +110,25 @@ def carregar_banco_de_dados(db_conection: Connection) -> None:
     insert_livro(db_conection, 'livro4', 3, 4)
 
     # Exemplares do livro
-    # Livro 1
+    # Livro 1 - Exemplar 1
     insert_exemplar(db_conection, 1, 0)
-    # Livro 2
+    # Livro 2 - Exemplar 2
     insert_exemplar(db_conection, 2, 0)
+    # Livro 2 - Exemplar 3
     insert_exemplar(db_conection, 2)
-    # Livro 3
+    # Livro 3 - Exemplar 4
     insert_exemplar(db_conection, 3, 0)
+    # Livro 3 - Exemplar 5
     insert_exemplar(db_conection, 3)
+    # Livro 3 - Exemplar 6
     insert_exemplar(db_conection, 3, 0)
-    # Livro 4
+    # Livro 4 - Exemplar 7
     insert_exemplar(db_conection, 4, 0)
+    # Livro 4 - Exemplar 8
     insert_exemplar(db_conection, 4)
+    # Livro 4 - Exemplar 9
     insert_exemplar(db_conection, 4)
+    # Livro 4 - Exemplar 10
     insert_exemplar(db_conection, 4)
 
     # Autores_Livros
@@ -169,15 +175,23 @@ def carregar_banco_de_dados(db_conection: Connection) -> None:
     daqui_a_tres_dias = hoje + timedelta(days=3) # daqui a três dias
 
     # Devolvidos
-    insert_emprestimo(db_conection, 1, 1, 1, 'DEVOLVIDO', quatro_dias_atras, ontem, dois_dias_atras, 0)
+    # Emprestimo=1 - Livro 1 - Exemplar 1
+    insert_emprestimo(db_conection, 1, 1, 1, 'DEVOLVIDO', quatro_dias_atras, ontem, dois_dias_atras, 0) # pylint: disable=line-too-long
+    # Emprestimo=2 - Livro 2 - Exemplar 2
     insert_emprestimo(db_conection, 1, 2, 2, 'DEVOLVIDO', tres_dias_atras, hoje, ontem, 1)
+    # Emprestimo=3 - Livro 3 - Exemplar 4
     insert_emprestimo(db_conection, 1, 3, 4, 'DEVOLVIDO', dois_dias_atras, amanha, hoje, 2)
 
     # Emprestado
+    # Emprestimo=4 - Livro 1 - Exemplar 1
     insert_emprestimo(db_conection, 1, 1, 1, 'EMPRESTADO', dois_dias_atras, amanha, None, 0)
+    # Emprestimo=5 - Livro 2 - Exemplar 2
     insert_emprestimo(db_conection, 1, 2, 2, 'EMPRESTADO', ontem, depois_de_amanha, None, 0)
+    # Emprestimo=6 - Livro 3 - Exemplar 4
     insert_emprestimo(db_conection, 1, 3, 4, 'EMPRESTADO', hoje, daqui_a_tres_dias, None, 0)
 
     # Atrasado
+    # Emprestimo=7 - Livro 3 - Exemplar 6
     insert_emprestimo(db_conection, 1, 3, 6, 'EMPRESTADO', quatro_dias_atras, ontem, None, 0)
-    insert_emprestimo(db_conection, 2, 4, 7, 'EMPRESTADO', cinco_dias_atras, dois_dias_atras, None, 0)
+    # Emprestimo=8 - Livro 4 - Exemplar 7
+    insert_emprestimo(db_conection, 2, 4, 7, 'EMPRESTADO', cinco_dias_atras, dois_dias_atras, None, 0) # pylint: disable=line-too-long

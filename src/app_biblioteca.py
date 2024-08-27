@@ -4,10 +4,8 @@ Aplicação do gerenciamento da Biblioteca.
 
 
 from typing import Final, Any
-from datetime import datetime
 import os
 import platform
-import locale
 from sqlite3 import Connection, IntegrityError
 
 from src.db.conexao_db import get_conexao_db
@@ -124,15 +122,6 @@ def input_opcoes(msg: str, opcoes: dict[str]) -> str:
         if opcao in opcoes:
             return opcao
         print(f"\n\t'{bright_vermelho(opcao)}' opção inválida! As opções válidas são: {verde(', '.join(opcoes))}") # pylint: disable=line-too-long
-
-def datetime_para_str(date_and_time: datetime | None) -> str:
-    '''
-    Converter data e hora em representação local.
-    '''
-    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-    if date_and_time is None:
-        return ''
-    return f"{date_and_time:%x} às {date_and_time:%X}"
 
 def exibir_menu(opcoes: dict[str, str]) -> None:
     '''

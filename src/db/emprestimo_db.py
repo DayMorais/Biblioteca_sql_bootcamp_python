@@ -34,7 +34,7 @@ def criar_tabela_emprestimos(db_conection: Connection)-> None:
     db_conection.commit()
 
 
-def insert_emprestimo(
+def insert_emprestimo( # pylint: disable=too-many-arguments
         db_conection: Connection,
         usuario_id: int,
         livro_id: int,
@@ -89,8 +89,6 @@ def tuple_to_dict(data: tuple) -> dict[str, Any]:
         livro_titulo,
         livro_numero_renovacoes,
         editora_nome
-        
-
      ) =  data
 
 
@@ -109,6 +107,7 @@ def tuple_to_dict(data: tuple) -> dict[str, Any]:
         'livro_numero_renovacoes': livro_numero_renovacoes,
         'editora_nome': editora_nome
     }
+
 
 def get_emprestimos_atrasados(db_conection: Connection, ) -> list[dict[str, int]]:
     '''
@@ -139,15 +138,15 @@ def get_emprestimo_by_id(db_conection: Connection, emprestimo_id: int) -> dict[s
     Obter um emprestimo pelo id.
     '''
     cursor = db_conection.cursor()
-    cursor.execute("""SELECT e.id, e.usuario_id, e.livro_id, e.exemplar_id, e.numero_de_renovacoes, e.estado,
-                        e.data_emprestimo, e.data_para_devolucao, e.data_devolucao,
-                        u.nome AS usuario_nome, l.titulo AS livro_titulo, l.renovacoes_permitidas AS livro_numero_renovacoes,
-                        ed.nome AS editora_nome
-                        FROM emprestimos AS e
-                        INNER JOIN usuarios AS u ON (u.id = e.usuario_id)
-                        INNER JOIN livros  AS l ON (l.id = e.livro_id)
-                        INNER JOIN editoras AS ed ON (ed.id = l.editora_id)
-                   WHERE e.id = ? """, (emprestimo_id,))
+    cursor.execute("""SELECT e.id, e.usuario_id, e.livro_id, e.exemplar_id, e.numero_de_renovacoes,
+                    e.estado, e.data_emprestimo, e.data_para_devolucao, e.data_devolucao,
+                    u.nome AS usuario_nome, l.titulo AS livro_titulo,
+                    l.renovacoes_permitidas AS livro_numero_renovacoes, ed.nome AS editora_nome
+                FROM emprestimos AS e
+                INNER JOIN usuarios AS u ON (u.id = e.usuario_id)
+                INNER JOIN livros  AS l ON (l.id = e.livro_id)
+                INNER JOIN editoras AS ed ON (ed.id = l.editora_id)
+                WHERE e.id = ? """, (emprestimo_id,))
     data = cursor.fetchone()
     if data:
         return tuple_to_dict(data)

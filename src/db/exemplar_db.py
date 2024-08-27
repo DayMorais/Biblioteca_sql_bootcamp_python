@@ -52,8 +52,6 @@ def update_exemplar(
     '''
     Atualiza dados do exemplar na tabela.
     '''
-    print(f"disponivel: {disponivel}")
-    print(f"identificacao: {identificacao}")
     db_conection.cursor().execute("UPDATE exemplares SET disponivel = ?  WHERE id = ?", (disponivel, identificacao)) # pylint: disable=line-too-long
     db_conection.commit()
 
