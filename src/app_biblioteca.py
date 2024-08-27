@@ -189,10 +189,10 @@ def exibir_livro_escrito_por_autor( autor: str, livros: list[dict[str, str]]) ->
     '''
     qtd = len(livros)
     if qtd > 1:
-        print(bright_amarelo(f'\n\t{autor.capitalize()} possui {qtd} livros escritos na biblioteca:'))
+        print(bright_amarelo(f'\n\t{autor.capitalize()} possui {qtd} livros escritos na biblioteca:')) # pylint: disable=line-too-long
     else:
-        print(bright_amarelo(f'\n\t{autor.capitalize()} possui {qtd} livro escrito na biblioteca:'))
-    
+        print(bright_amarelo(f'\n\t{autor.capitalize()} possui {qtd} livro escrito na biblioteca:')) # pylint: disable=line-too-long
+
     for livro in livros:
         titulo = livro['titulo']
         print(bright_amarelo(f"\n\tLivro de título '{titulo}'"))
@@ -242,9 +242,9 @@ def encontar_todos_livros_emprestados(conexao: Connection) -> list[dict[str, str
         titulo = livro['titulo']
         qtd = livro['qtd']
         if qtd > 1:
-            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplares emprestados."))
+            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplares emprestados.")) # pylint: disable=line-too-long
         else:
-            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplar emprestado."))
+            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplar emprestado.")) # pylint: disable=line-too-long
 
 def localizar_livros_do_autor(conexao: Connection) -> list[dict[str, str]]:
     '''
@@ -270,9 +270,9 @@ def verificar_numero_de_exemplares_disponiveis_do_livro(
     else:
         quantidade = verificar_copias_disponiveis(conexao, livro['id'])
         if quantidade > 1:
-            print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplares disponíveis"))
+            print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplares disponíveis")) # pylint: disable=line-too-long
         else:
-            print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplar disponível"))
+            print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplar disponível")) # pylint: disable=line-too-long
 
 def mostrar_emprestimos_em_atraso(conexao: Connection)  -> list[dict[str, str]]:
     '''
@@ -288,7 +288,7 @@ def devolver(conexao: Connection, identificacao_emprestimo: int) -> dict[str, An
     '''
     emprestimo = get_emprestimo_by_id(conexao, identificacao_emprestimo)
     if not emprestimo:
-        raise ValueError (bright_vermelho(f'\n\tO empréstimo de identificação |{identificacao_emprestimo}| não existe na base de dados'))
+        raise ValueError (bright_vermelho(f'\n\tO empréstimo de identificação |{identificacao_emprestimo}| não existe na base de dados'))  # pylint: disable=line-too-long
     if emprestimo['estado'] == 'DEVOLVIDO':
         raise ValueError (bright_vermelho("\n\tEmpréstimo já foi devolvido."))
 
@@ -308,10 +308,10 @@ def devolver_livro(conexao: Connection) -> dict[str, Any]:
     '''
     Marca um livro como devolvido
     '''
-    try:   
+    try:
         identificacao = get_id("Identificação do empréstimo: ")
         devolver(conexao, identificacao)
-        print(bright_amarelo(f'\n\tEmpréstimo de identificação |{identificacao}| Devolvido com sucesso!'))
+        print(bright_amarelo(f'\n\tEmpréstimo de identificação |{identificacao}| Devolvido com sucesso!')) # pylint: disable=line-too-long
     except ValueError as erro:
         print(bright_vermelho(str(erro)))
 
@@ -329,7 +329,7 @@ def deletar_um_autor(conexao: Connection) -> dict[str, Any]:
     except ValueError as erro:
         print(bright_vermelho(str(erro)))
     except IntegrityError:
-        print(bright_vermelho(f"\n\tO autor {autor_nome} não pode ser excluído porque possui livros associados."))
+        print(bright_vermelho(f"\n\tO autor {autor_nome} não pode ser excluído porque possui livros associados.")) # pylint: disable=line-too-long
 
 ###########################################################
                   # CARREGAR BANCO DE DAODS #
@@ -347,7 +347,7 @@ def carregar_db(conexao: Connection) -> None:
                 break
             if opcao == 'N':
                 break
-    except Exception as erro:
+    except Exception as erro:  # pylint: disable=broad-exception-caught
         print(bright_vermelho('\n\tNão foi possível realizar a carga da base de dados.'))
         print(bright_vermelho(f'\n\t{str(erro)}'))
 

@@ -53,7 +53,7 @@ from src.db.emprestimo_db import(
 )
 
 
-def carregar_banco_de_dados(db_conection: Connection) -> None:
+def carregar_banco_de_dados(db_conection: Connection) -> None: # pylint: disable=too-many-statements
     '''
     Fluxo principal
     '''

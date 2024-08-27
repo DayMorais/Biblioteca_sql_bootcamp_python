@@ -114,10 +114,10 @@ def get_emprestimos_atrasados(db_conection: Connection, ) -> list[dict[str, int]
     Obter todos os emprestimos em atraso
     '''
     cursor = db_conection.cursor()
-    cursor.execute("""SELECT e.id, e.usuario_id, e.livro_id, e.exemplar_id, e.numero_de_renovacoes, e.estado,
-                        e.data_emprestimo, e.data_para_devolucao, e.data_devolucao,
-                        u.nome AS usuario_nome, l.titulo AS livro_titulo, l.renovacoes_permitidas AS livro_numero_renovacoes,
-                        ed.nome AS editora_nome
+    cursor.execute("""SELECT e.id, e.usuario_id, e.livro_id, e.exemplar_id, e.numero_de_renovacoes,
+                    e.estado, e.data_emprestimo, e.data_para_devolucao, e.data_devolucao,
+                    u.nome AS usuario_nome, l.titulo AS livro_titulo,
+                    l.renovacoes_permitidas AS livro_numero_renovacoes, ed.nome AS editora_nome
                         FROM emprestimos AS e
                         INNER JOIN usuarios AS u ON (u.id = e.usuario_id)
                         INNER JOIN livros  AS l ON (l.id = e.livro_id)
