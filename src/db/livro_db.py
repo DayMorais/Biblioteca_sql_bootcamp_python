@@ -48,6 +48,51 @@ def insert_livro(
     db_conection.commit()
 
 
+def tuple_to_dict(data: tuple) -> dict[str, Any]:
+    '''
+    Transforma um elemento (tuple) do banco de dados em uma estrutura de dicionário.
+    Retorna o dicionário com dados.
+    '''
+    if not data:
+        return {}
+    identificacao, titulo, renovacoes_permitidas,  editora_id  =  data
+    return {
+        'id': identificacao,
+        'titulo': titulo,
+        'renovacoes_permitidas': renovacoes_permitidas,
+        'editora_id': editora_id,
+    }
+
+def get_livro_by_id(db_conection: Connection, livro_id: int) -> dict[str, str]:
+    '''
+    Obter livro pelo id
+    '''
+    cursor = db_conection.cursor()
+    cursor.execute(f"""SELECT l.id, l.titulo, l.renovacoes_permitidas, l.editora_id
+                        FROM livros AS l
+                        WHERE l.id = {livro_id} """)
+
+    livro_db = cursor.fetchone()
+    return tuple_to_dict(livro_db)
+
+def get_livros_by_autor_nome(db_conection: Connection, autor_nome: str) -> list[dict[str, str]]:
+    '''
+    Obter todos os livros de um determinado autor
+    '''
+    cursor = db_conection.cursor()
+    cursor.execute(f"""SELECT l.id, l.titulo, l.renovacoes_permitidas, l.editora_id
+                        FROM livros AS l
+                        INNER JOIN  autores_livros AS al ON (l.id = al.livro_id)
+                        INNER JOIN autores AS a ON (al.autor_id = a.id)
+                        WHERE a.nome = '{autor_nome}' """)
+
+    autores_db = cursor.fetchall()
+    result: list[dict[str, int]] = []
+    for data in autores_db:
+        autor = tuple_to_dict(data)
+        result.append(autor)
+    return result
+
 ##########################################################################
              # OUTRA INTERFACE DE RESPOSTA (PARA CONTAGEM) #
 ##########################################################################

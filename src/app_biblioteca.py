@@ -13,7 +13,10 @@ from sqlite3 import Connection
 from src.db.conexao_db import get_conexao_db
 from src.db.carga_db import carregar_banco_de_dados
 from src.db.listar_livros import listar_livros
-from src.db.livro_db import get_livros_emprestado_count
+from src.db.livro_db import(
+    get_livros_emprestado_count,
+    get_livros_by_autor_nome,
+) 
 
 
 
@@ -146,6 +149,33 @@ def escolher_uma_opcao_do_menu_entrada(opcoes_menu_dict: dict[str, str]) -> str:
     return escolher_opcao
 
 ######################################################
+             # ENTRADA DE DADOS #
+######################################################
+
+def get_dado_str(msg_tipo_de_dado: str) -> str:
+    '''
+    obtem dado tipo str 
+    Retorna o dado
+    '''
+    while True:
+        tipo = get_input(f'\n\t{msg_tipo_de_dado}').lower()
+        if tipo == '':
+            print(bright_vermelho(f'\tValor inválido. O campo {tipo} deve ser preenchido.'))
+        return tipo
+
+def get_id(msg: str) -> int:
+    '''
+    obtem o id.
+    Retorna id
+    '''
+    while True:
+        identificacao = input_int(f'\n\t{msg}')
+        if identificacao > 0:
+            return identificacao
+        print(bright_vermelho('\tValor  inválido. O identificador deve ser maior que zero.'))
+
+
+######################################################
     # FUNÇÕES PARA EXIBIR RESULTADOS #
 ######################################################
 def exibir_disponibilidade_livros(msg, livros: list[dict[str, int]]) -> None:
@@ -163,6 +193,19 @@ def exibir_disponibilidade_livros(msg, livros: list[dict[str, int]]) -> None:
         else:
             print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplar. "))
 
+def exibir_livro_escrito_por_autor( autor: str, livros: list[dict[str, str]]) -> None:
+    '''
+    Exibe o resultado número de exemplares de um determinado livro.
+    '''
+    qtd = len(livros)
+    if qtd > 1:
+        print(bright_amarelo(f'\n\t{autor.capitalize()} possui {qtd} livros escritos na biblioteca:'))
+    else:
+        print(bright_amarelo(f'\n\t{autor.capitalize()} possui {qtd} livro escrito na biblioteca:'))
+    
+    for livro in livros:
+        titulo = livro['titulo']
+        print(bright_amarelo(f"\n\tLivro de título '{titulo}'"))
 
 ######################################################
              # FUNCIONALIDADES DA APLICAÇÃO #
@@ -174,6 +217,16 @@ def encontar_todos_livros_emprestados(conexao: Connection) -> list[dict[str, str
     livros = get_livros_emprestado_count(conexao)
     exibir_disponibilidade_livros('Livros emprestados', livros)
 
+def localizar_livros_do_autor(conexao: Connection) -> list[dict[str, str]]:
+    '''
+    Localizar os livros escritos por um autor específico
+    '''
+    nome = get_dado_str("Nome do autor: ")
+    livros = get_livros_by_autor_nome(conexao, nome)
+    if livros:
+        exibir_livro_escrito_por_autor(nome, livros)
+    else:
+        print(bright_vermelho(f"\n\t A biblioteca não possui livros do autor '{nome}'."))
 
 ###########################################################
                   # CARREGAR BANCO DE DAODS #
@@ -217,7 +270,7 @@ def biblioteca_db() -> None:
             if opcao == '2':
                 encontar_todos_livros_emprestados(conexao)
             if opcao == '3':
-                print('\n\tDesenvolver ou inserir a funcionalidade: Localizar os livros escritos por um autor específico')
+                localizar_livros_do_autor(conexao)
             if opcao == '4':
                 print('\n\tDesenvolver ou inserir a funcionalidade: Verificar o número de cópias disponíveis de um determinado livro')
             if opcao == '5':
