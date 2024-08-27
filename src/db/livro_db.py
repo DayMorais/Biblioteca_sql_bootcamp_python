@@ -93,6 +93,18 @@ def get_livros_by_autor_nome(db_conection: Connection, autor_nome: str) -> list[
         result.append(autor)
     return result
 
+def get_livro_by_titulo(db_conection: Connection, titulo: str) -> dict[str, str]:
+    '''
+    Obter livro pelo titulo 
+    '''
+    cursor = db_conection.cursor()
+    cursor.execute(f"""SELECT l.id, l.titulo, l.renovacoes_permitidas, l.editora_id
+                        FROM livros AS l
+                        WHERE l.titulo = '{titulo}' """)
+
+    livro_db = cursor.fetchone()
+    return tuple_to_dict(livro_db)
+
 ##########################################################################
              # OUTRA INTERFACE DE RESPOSTA (PARA CONTAGEM) #
 ##########################################################################

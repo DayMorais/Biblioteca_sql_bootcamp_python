@@ -16,8 +16,10 @@ from src.db.listar_livros import listar_livros
 from src.db.livro_db import(
     get_livros_emprestado_count,
     get_livros_by_autor_nome,
-) 
+    get_livro_by_titulo,
+)
 
+from src.db.exemplar_db import verificar_copias_disponiveis
 
 
 COR_BRANCA: Final[str] = '\033[0;0m'
@@ -228,6 +230,23 @@ def localizar_livros_do_autor(conexao: Connection) -> list[dict[str, str]]:
     else:
         print(bright_vermelho(f"\n\t A biblioteca não possui livros do autor '{nome}'."))
 
+def verificar_numero_de_exemplares_disponiveis_do_livro(
+    conexao: Connection
+) -> list[dict[str, str]]:
+    '''
+    Verifica o número de cópias disponíveis de um determinado livro
+    '''
+    titulo = get_dado_str("Título do livro: ")
+    livro =  get_livro_by_titulo(conexao, titulo)
+    if not livro:
+        print(bright_vermelho(f'\n\t {titulo} não encontrado na base de dados.'))
+    else:
+        quantidade = verificar_copias_disponiveis(conexao, livro['id'])
+        if quantidade > 1:
+            print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplares disponíveis"))
+        else:
+            print(bright_amarelo(f"\n\tO livro de título '{livro['titulo']}' possui {quantidade} exemplar disponível"))
+
 ###########################################################
                   # CARREGAR BANCO DE DAODS #
 ###########################################################
@@ -272,7 +291,7 @@ def biblioteca_db() -> None:
             if opcao == '3':
                 localizar_livros_do_autor(conexao)
             if opcao == '4':
-                print('\n\tDesenvolver ou inserir a funcionalidade: Verificar o número de cópias disponíveis de um determinado livro')
+                verificar_numero_de_exemplares_disponiveis_do_livro(conexao)
             if opcao == '5':
                 print('\n\tDesenvolver ou inserir a funcionalidade: Mostrar os empréstimos em atraso')
             if opcao == '6':
