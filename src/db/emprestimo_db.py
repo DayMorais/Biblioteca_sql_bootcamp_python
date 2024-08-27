@@ -64,7 +64,7 @@ def insert_emprestimo(
 
 
 ##########################################################################
-    # INTERFACE DE RESPOSTA PARA COUNT #
+    # INTERFACE DE RESPOSTA #
 ##########################################################################
 
 def tuple_to_dict(data: tuple) -> dict[str, Any]:
@@ -133,3 +133,36 @@ def get_emprestimos_atrasados(db_conection: Connection, ) -> list[dict[str, int]
         emprestimo = tuple_to_dict(data)
         result.append(emprestimo)
     return result
+
+def get_emprestimo_by_id(db_conection: Connection, emprestimo_id: int) -> dict[str, Any]:
+    '''
+    Obter um emprestimo pelo id.
+    '''
+    cursor = db_conection.cursor()
+    cursor.execute("""SELECT e.id, e.usuario_id, e.livro_id, e.exemplar_id, e.numero_de_renovacoes, e.estado,
+                        e.data_emprestimo, e.data_para_devolucao, e.data_devolucao,
+                        u.nome AS usuario_nome, l.titulo AS livro_titulo, l.renovacoes_permitidas AS livro_numero_renovacoes,
+                        ed.nome AS editora_nome
+                        FROM emprestimos AS e
+                        INNER JOIN usuarios AS u ON (u.id = e.usuario_id)
+                        INNER JOIN livros  AS l ON (l.id = e.livro_id)
+                        INNER JOIN editoras AS ed ON (ed.id = l.editora_id)
+                   WHERE e.id = ? """, (emprestimo_id,))
+    data = cursor.fetchone()
+    if data:
+        return tuple_to_dict(data)
+    return {}
+
+
+def update_emprestimo_devolucao(
+        db_conection: Connection,
+        identificacao: int,
+        estado: str,
+        data_devolucao: datetime | None = datetime.now(),
+    ) -> None:
+    '''
+    Atualiza dados do emprestimo na tabela.
+    '''
+    dados = (estado, data_devolucao, identificacao)
+    db_conection.cursor().execute("UPDATE emprestimos SET estado = ?, data_devolucao = ? WHERE id = ?", dados) # pylint: disable=line-too-long
+    db_conection.commit()

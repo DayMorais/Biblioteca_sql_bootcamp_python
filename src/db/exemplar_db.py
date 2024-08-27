@@ -44,6 +44,18 @@ def insert_exemplar(
                                   dados)  # pylint: disable=line-too-long
     db_conection.commit()
 
+def update_exemplar(
+        db_conection: Connection,
+        disponivel: int,
+        identificacao: int,
+    ) -> None:
+    '''
+    Atualiza dados do exemplar na tabela.
+    '''
+    print(f"disponivel: {disponivel}")
+    print(f"identificacao: {identificacao}")
+    db_conection.cursor().execute("UPDATE exemplares SET disponivel = ?  WHERE id = ?", (disponivel, identificacao)) # pylint: disable=line-too-long
+    db_conection.commit()
 
 def verificar_copias_disponiveis(
     db_conection: Connection,

@@ -13,13 +13,20 @@ from sqlite3 import Connection
 from src.db.conexao_db import get_conexao_db
 from src.db.carga_db import carregar_banco_de_dados
 from src.db.listar_livros import listar_livros
-from src.db.livro_db import(
+from src.db.livro_db import (
     get_livros_emprestado_count,
     get_livros_by_autor_nome,
     get_livro_by_titulo,
 )
-from src.db.emprestimo_db import get_emprestimos_atrasados
-from src.db.exemplar_db import verificar_copias_disponiveis
+from src.db.emprestimo_db import (
+   get_emprestimos_atrasados,
+   get_emprestimo_by_id,
+   update_emprestimo_devolucao,
+)
+from src.db.exemplar_db import (
+   verificar_copias_disponiveis,
+   update_exemplar,
+)
 
 
 COR_BRANCA: Final[str] = '\033[0;0m'
@@ -180,20 +187,6 @@ def get_id(msg: str) -> int:
 ######################################################
     # FUNÇÕES PARA EXIBIR RESULTADOS #
 ######################################################
-def exibir_disponibilidade_livros(msg, livros: list[dict[str, int]]) -> None:
-    '''
-    Exibe o resultado da opção escolhida
-    '''
-
-    print(bright_amarelo(f'\n\t{msg}'))
-
-    for livro in livros:
-        titulo = livro['titulo']
-        qtd = livro['qtd']
-        if qtd > 1:
-            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplares. "))
-        else:
-            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplar. "))
 
 def exibir_livro_escrito_por_autor( autor: str, livros: list[dict[str, str]]) -> None:
     '''
@@ -244,7 +237,19 @@ def encontar_todos_livros_emprestados(conexao: Connection) -> list[dict[str, str
     Obtem todos os livros emprestados no momento.
     '''
     livros = get_livros_emprestado_count(conexao)
-    exibir_disponibilidade_livros('Livros emprestados', livros)
+
+    if not livros:
+        print(bright_amarelo('\n\tSem Livros emprestados no momento.'))
+        return
+
+    print(bright_amarelo('\n\tLivros emprestados'))
+    for livro in livros:
+        titulo = livro['titulo']
+        qtd = livro['qtd']
+        if qtd > 1:
+            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplares emprestados."))
+        else:
+            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplar emprestado."))
 
 def localizar_livros_do_autor(conexao: Connection) -> list[dict[str, str]]:
     '''
@@ -280,6 +285,40 @@ def mostrar_emprestimos_em_atraso(conexao: Connection)  -> list[dict[str, str]]:
     '''
     emprestimo = get_emprestimos_atrasados(conexao)
     exibir_emprestimos_em_atraso(emprestimo)
+
+def devolver(conexao: Connection, identificacao_emprestimo: int) -> dict[str, Any]:
+    '''
+    Devolve o empréstimo  de id 
+    Retorna o Emprestimo como DEVOLVIDO.
+    '''
+    emprestimo = get_emprestimo_by_id(conexao, identificacao_emprestimo)
+    if not emprestimo:
+        raise ValueError (bright_vermelho(f'\n\tO empréstimo de identificação |{identificacao_emprestimo}| não existe na base de dados'))
+    if emprestimo['estado'] == 'DEVOLVIDO':
+        raise ValueError (bright_vermelho("\n\tEmpréstimo já foi devolvido."))
+
+    update_emprestimo_devolucao(
+        conexao,
+        identificacao= identificacao_emprestimo,
+        estado='DEVOLVIDO',
+    )
+    update_exemplar(
+        conexao,
+        disponivel = 1,
+        identificacao = emprestimo['exemplar_id'],
+    )
+    return get_emprestimo_by_id(conexao, identificacao_emprestimo)
+
+def devolver_livro(conexao: Connection) -> dict[str, Any]:
+    '''
+    Marca um livro como devolvido
+    '''
+    try:   
+        identificacao = get_id("Identificação do empréstimo: ")
+        devolver(conexao, identificacao)
+        print(bright_amarelo(f'\n\tEmpréstimo de identificação |{identificacao}| Devolvido com sucesso!'))
+    except ValueError as erro:
+        print(bright_vermelho(str(erro)))
 
 ###########################################################
                   # CARREGAR BANCO DE DAODS #
@@ -329,7 +368,7 @@ def biblioteca_db() -> None:
             if opcao == '5':
                 mostrar_emprestimos_em_atraso(conexao)
             if opcao == '6':
-                print('\n\tDesenvolver ou inserir a funcionalidade: Marcar um livro como devolvido')
+                devolver_livro(conexao)
             if opcao == '7':
                 print('\n\tDesenvolver ou inserir a funcionalidade: Remover um autor')
             if opcao == "S":
