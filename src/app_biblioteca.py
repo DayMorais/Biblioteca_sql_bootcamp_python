@@ -13,6 +13,8 @@ from sqlite3 import Connection
 from src.db.conexao_db import get_conexao_db
 from src.db.carga_db import carregar_banco_de_dados
 from src.db.listar_livros import listar_livros
+from src.db.livro_db import get_livros_emprestado_count
+
 
 
 COR_BRANCA: Final[str] = '\033[0;0m'
@@ -143,6 +145,35 @@ def escolher_uma_opcao_do_menu_entrada(opcoes_menu_dict: dict[str, str]) -> str:
         ).upper()
     return escolher_opcao
 
+######################################################
+    # FUNÇÕES PARA EXIBIR RESULTADOS #
+######################################################
+def exibir_disponibilidade_livros(msg, livros: list[dict[str, int]]) -> None:
+    '''
+    Exibe o resultado da opção escolhida
+    '''
+
+    print(bright_amarelo(f'\n\t{msg}'))
+
+    for livro in livros:
+        titulo = livro['titulo']
+        qtd = livro['qtd']
+        if qtd > 1:
+            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplares. "))
+        else:
+            print(bright_amarelo(f"\n\tO livro de título '{titulo}' possui {qtd} exemplar. "))
+
+
+######################################################
+             # FUNCIONALIDADES DA APLICAÇÃO #
+######################################################
+def encontar_todos_livros_emprestados(conexao: Connection) -> list[dict[str, str]]:
+    '''
+    Obtem todos os livros emprestados no momento.
+    '''
+    livros = get_livros_emprestado_count(conexao)
+    exibir_disponibilidade_livros('Livros emprestados', livros)
+
 
 ###########################################################
                   # CARREGAR BANCO DE DAODS #
@@ -184,7 +215,7 @@ def biblioteca_db() -> None:
                 print('\n\tListando todos os exemplares disponíveis...')
                 listar_livros(conexao)
             if opcao == '2':
-                print('\n\tDesenvolver ou inserir a funcionalidade: Encontrar todos os livros emprestados no momento')
+                encontar_todos_livros_emprestados(conexao)
             if opcao == '3':
                 print('\n\tDesenvolver ou inserir a funcionalidade: Localizar os livros escritos por um autor específico')
             if opcao == '4':
