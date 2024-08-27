@@ -8,7 +8,7 @@ from datetime import datetime
 import os
 import platform
 import locale
-from sqlite3 import Connection
+from sqlite3 import Connection, IntegrityError
 
 from src.db.conexao_db import get_conexao_db
 from src.db.carga_db import carregar_banco_de_dados
@@ -27,6 +27,12 @@ from src.db.exemplar_db import (
    verificar_copias_disponiveis,
    update_exemplar,
 )
+
+from src.db.autor_db import (
+    delete_autor,
+    get_autor_by_nome,
+)
+
 
 
 COR_BRANCA: Final[str] = '\033[0;0m'
@@ -320,6 +326,22 @@ def devolver_livro(conexao: Connection) -> dict[str, Any]:
     except ValueError as erro:
         print(bright_vermelho(str(erro)))
 
+def deletar_um_autor(conexao: Connection) -> dict[str, Any]:
+    '''
+    Remover um autor
+    '''
+    try:
+        autor_nome = get_dado_str('\n\tNome do autor: ')
+        autor = get_autor_by_nome(conexao, autor_nome)
+        if not autor:
+            raise ValueError(bright_vermelho(f"\n\tAutor {autor_nome} não cadastrado."))
+        delete_autor(conexao, autor['id'])
+        print(bright_amarelo(f'\n\tAutor {autor_nome} excluido com sucesso!'))
+    except ValueError as erro:
+        print(bright_vermelho(str(erro)))
+    except IntegrityError:
+        print(bright_vermelho(f"\n\tO autor {autor_nome} não pode ser excluído porque possui livros associados."))
+
 ###########################################################
                   # CARREGAR BANCO DE DAODS #
 ###########################################################
@@ -370,7 +392,7 @@ def biblioteca_db() -> None:
             if opcao == '6':
                 devolver_livro(conexao)
             if opcao == '7':
-                print('\n\tDesenvolver ou inserir a funcionalidade: Remover um autor')
+                deletar_um_autor(conexao)
             if opcao == "S":
                 print(bright_amarelo('\n\tVocê saiu do sistema!'))
                 break
