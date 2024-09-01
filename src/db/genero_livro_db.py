@@ -32,5 +32,5 @@ def insert_generos_livros(db_conection: Connection, genero_id: int, livro_id: in
     Inseri genero_id e livro_id na tabela.
     '''
     dados = (genero_id, livro_id)
-    db_conection.cursor().execute('INSERT INTO generos_livros(genero_id, livro_id) VALUES(?, ?)', dados)
+    db_conection.cursor().execute('INSERT INTO generos_livros(genero_id, livro_id) VALUES(?, ?)', dados) # pylint: disable=line-too-long
     db_conection.commit()
